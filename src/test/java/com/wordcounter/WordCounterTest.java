@@ -11,8 +11,8 @@ import org.junit.Before;
 
 public class WordCounterTest {
 	
-	private String stopWordsPath = "inputFiles\\stop-words.txt";
-	private String fileToCountPath = "inputFiles\\mobydick.txt";
+	private String stopWordsFile = "stop-words.txt";
+	private String fileToCountFile = "mobydick.txt";
 	private WordCounter counter;
 	
 	@Before
@@ -27,7 +27,7 @@ public class WordCounterTest {
 	
 	@Test
 	public void test_populateStopWordsFromFile_populates_stopWords_set() {
-		counter.populateStopWordsFromFile(stopWordsPath);
+		counter.populateStopWordsFromFile(stopWordsFile);
 		Set<String> stopWords = counter.getStopWords();
 		assertNotNull(stopWords);
 		assertTrue(stopWords.contains("about"));
@@ -35,7 +35,7 @@ public class WordCounterTest {
 	
 	@Test
 	public void test_populateCountedWordsMapFromFile_populates_countedWordsByWord_map() {
-		counter.populateCountedWordsMapFromFile(fileToCountPath);
+		counter.populateCountedWordsMapFromFile(fileToCountFile);
 		Map<String, CountedWord> countedWordsMap = counter.getCountedWordsByWord();
 		assertNotNull(countedWordsMap);
 		assertTrue(countedWordsMap.containsKey("whale"));
@@ -44,7 +44,7 @@ public class WordCounterTest {
 	
 	@Test
 	public void test_getTop100CountedWordsFromFile_returns_list_of_100_words() {
-		List<CountedWord> words = counter.getTop100CountedWordsFromFile(fileToCountPath);
+		List<CountedWord> words = counter.getTop100CountedWordsFromFile(fileToCountFile);
 		assertNotNull(words);
 		assertEquals(words.size(), 100);
 	}

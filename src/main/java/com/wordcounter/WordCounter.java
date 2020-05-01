@@ -1,8 +1,8 @@
 package com.wordcounter;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,9 +16,10 @@ public class WordCounter {
 	private Set<String> stopWords;
 	private Map<String, CountedWord> countedWordsByWord;
 	
-	public void populateStopWordsFromFile(String filePath) {
+	public void populateStopWordsFromFile(String fileName) {
 		stopWords = new HashSet<String>();
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				getClass().getClassLoader().getResourceAsStream(fileName)))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (line.length() > 0 && line.charAt(0) != '#') {
@@ -31,12 +32,13 @@ public class WordCounter {
 		}
 	}
 	
-	public void populateCountedWordsMapFromFile(String filePath) {
+	public void populateCountedWordsMapFromFile(String fileName) {
 		countedWordsByWord = new HashMap<>();
 		if (stopWords == null) {
 			stopWords = new HashSet<>();
 		}
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				getClass().getClassLoader().getResourceAsStream(fileName)))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] words = line.split("\\W+");
@@ -58,8 +60,8 @@ public class WordCounter {
 		}
 	}
 	
-	public List<CountedWord> getTop100CountedWordsFromFile(String filePath) {
-		populateCountedWordsMapFromFile(filePath);
+	public List<CountedWord> getTop100CountedWordsFromFile(String fileName) {
+		populateCountedWordsMapFromFile(fileName);
 		List<CountedWord> top100 = new ArrayList<>();
 		for (CountedWord cw : countedWordsByWord.values()) {
 			top100.add(cw);
