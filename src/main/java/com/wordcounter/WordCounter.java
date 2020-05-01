@@ -13,10 +13,10 @@ import java.util.Set;
 
 public class WordCounter {
 	
-	Set<String> stopWords;
-	Map<String, CountedWord> countedWordsByWord;
+	private Set<String> stopWords;
+	private Map<String, CountedWord> countedWordsByWord;
 	
-	public void setStopWordsFromFile(String filePath) {
+	public void populateStopWordsFromFile(String filePath) {
 		stopWords = new HashSet<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			String line;
@@ -33,6 +33,9 @@ public class WordCounter {
 	
 	public void populateCountedWordsMapFromFile(String filePath) {
 		countedWordsByWord = new HashMap<>();
+		if (stopWords == null) {
+			stopWords = new HashSet<>();
+		}
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -55,7 +58,8 @@ public class WordCounter {
 		}
 	}
 	
-	public List<CountedWord> getTop100CountedWords() {
+	public List<CountedWord> getTop100CountedWordsFromFile(String filePath) {
+		populateCountedWordsMapFromFile(filePath);
 		List<CountedWord> top100 = new ArrayList<>();
 		for (CountedWord cw : countedWordsByWord.values()) {
 			top100.add(cw);
@@ -64,6 +68,13 @@ public class WordCounter {
 		return top100.subList(0, 100);
 	}
 	
+	public Set<String> getStopWords() {
+		return stopWords;
+	}
+	
+	public Map<String, CountedWord> getCountedWordsByWord() {
+		return countedWordsByWord;
+	}
 	
 	
 	/*
@@ -73,6 +84,7 @@ public class WordCounter {
 		- hyphenated words?
 		- case sensitive?
 		- words with same count?
+		- plural?
 	*/
 
 }
