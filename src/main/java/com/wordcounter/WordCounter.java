@@ -135,7 +135,6 @@ public class WordCounter {
 	TODO: 
 		- Documentation
 		- count hyphenated words as one
-		- ensure alphabetic sorting for same count
 		
 		- stretch: plural logic? maybe use argument, have it both ways
 	   

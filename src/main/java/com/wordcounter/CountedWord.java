@@ -24,7 +24,11 @@ public class CountedWord implements Comparable<CountedWord> {
 	
 	@Override
 	public int compareTo(CountedWord compareToWord) {
-		return compareToWord.count - this.count;
+		int c = compareToWord.count - this.count;
+		if (c == 0) {
+			c = this.word.compareTo(compareToWord.word);
+		}
+		return c;
 	}
 	
 }

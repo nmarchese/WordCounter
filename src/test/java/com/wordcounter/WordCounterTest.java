@@ -43,7 +43,7 @@ public class WordCounterTest {
 	}
 	
 	@Test
-	public void test_getTop100CountedWordsFromFile_returns_list_of_100_words() {
+	public void test_getTop100CountedWordsFromDefaultFile_returns_list_of_100_words() {
 		List<CountedWord> words = counter.getTop100CountedWordsFromDefaultFile();
 		assertNotNull(words);
 		assertEquals(words.size(), 100);
