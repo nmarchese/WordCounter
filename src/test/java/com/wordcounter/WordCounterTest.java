@@ -2,6 +2,7 @@ package com.wordcounter;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,8 +12,6 @@ import org.junit.Before;
 
 public class WordCounterTest {
 	
-//	private String stopWordsFile = "stop-words.txt";
-//	private String fileToCountFile = "mobydick.txt";
 	private WordCounter counter;
 	
 	@Before
@@ -21,7 +20,7 @@ public class WordCounterTest {
 	}
 	
 	@Test
-	public void test() {
+	public void test_that_tests_test() {
 		assertTrue(true);
 	}
 	
@@ -34,9 +33,24 @@ public class WordCounterTest {
 	}
 	
 	@Test
-	public void test_populateDefaultCountedWordsMap_populates_countedWordsByWord_map() {
-		counter.populateDefaultCountedWordsMap();
-		Map<String, CountedWord> countedWordsMap = counter.getCountedWordsByWord();
+	public void test_populateStopWordsFromFile_populates_stopWords_from_file() {
+		counter.populateStopWordsFromFile("src\\main\\resources\\stop-words.txt");
+		Set<String> stopWords = counter.getStopWords();
+		assertNotNull(stopWords);
+		assertTrue(stopWords.contains("about"));
+	}
+	
+	@Test
+	public void test_createDefaultCountedWordsMap_populates_countedWordsByWord_map() {
+		Map<String, CountedWord> countedWordsMap = counter.createDefaultCountedWordsMap();
+		assertNotNull(countedWordsMap);
+		assertTrue(countedWordsMap.containsKey("whale"));
+		assertEquals(countedWordsMap.get("whale").getCount(), 1244);
+	}
+	
+	@Test
+	public void test_createCountedWordsMapFromFile_populates_countedWordsByWord_map() {
+		Map<String, CountedWord> countedWordsMap = counter.createCountedWordsMapFromFile("src\\main\\resources\\mobydick.txt");
 		assertNotNull(countedWordsMap);
 		assertTrue(countedWordsMap.containsKey("whale"));
 		assertEquals(countedWordsMap.get("whale").getCount(), 1244);
@@ -47,6 +61,35 @@ public class WordCounterTest {
 		List<CountedWord> words = counter.getTop100CountedWordsFromDefaultFile();
 		assertNotNull(words);
 		assertEquals(words.size(), 100);
+	}
+
+	@Test
+	public void test_getTop100CountedWords_returns_list_sorted_by_count() {
+		CountedWord word1 = new CountedWord("test1");
+		CountedWord word2 = new CountedWord("test2");
+		word1.iterateCount();
+		Map<String, CountedWord> countedWordsMap = new HashMap<>();
+		countedWordsMap.put(word1.getWord(), word1);
+		countedWordsMap.put(word2.getWord(), word2);
+		
+		List<CountedWord> words = counter.getTop100CountedWords(countedWordsMap);
+		assertNotNull(words);
+		assertEquals(words.get(0), word1);
+		assertEquals(words.get(1), word2);
+	}
+	
+	@Test
+	public void test_getTop100CountedWords_returns_list_sorted_alphabetically_when_count_is_equal() {
+		CountedWord word1 = new CountedWord("testB");
+		CountedWord word2 = new CountedWord("testA");
+		Map<String, CountedWord> countedWordsMap = new HashMap<>();
+		countedWordsMap.put(word1.getWord(), word1);
+		countedWordsMap.put(word2.getWord(), word2);
+		
+		List<CountedWord> words = counter.getTop100CountedWords(countedWordsMap);
+		assertNotNull(words);
+		assertEquals(words.get(0), word2);
+		assertEquals(words.get(1), word1);
 	}
 	
 }

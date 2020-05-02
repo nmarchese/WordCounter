@@ -16,7 +16,6 @@ import java.util.Set;
 public class WordCounter {
 	
 	private Set<String> stopWords;
-	private Map<String, CountedWord> countedWordsByWord;
 	
 	private static final String DEFAULT_STOP_WORDS = "stop-words.txt";
 	private static final String DEFAULT_FILE_TO_COUNT = "mobydick.txt";
@@ -54,26 +53,30 @@ public class WordCounter {
 		}
 	}
 	
-	public void populateCountedWordsMapFromFile(String fileName) {
+	public Map<String, CountedWord> createCountedWordsMapFromFile(String fileName) {
+		Map<String, CountedWord> countedWordsByWord = null;
 		try (InputStream is = new FileInputStream(fileName)) {
-			populateCountedWordsMap(is);
+			countedWordsByWord = createCountedWordsMap(is);
 		} catch (IOException ioe) {
 			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
+		return countedWordsByWord;
 	}
 	
-	public void populateDefaultCountedWordsMap() {
+	public Map<String, CountedWord> createDefaultCountedWordsMap() {
+		Map<String, CountedWord> countedWordsByWord = null;
 		try (InputStream is = getClass().getClassLoader().getResourceAsStream(DEFAULT_FILE_TO_COUNT)) {
-			populateCountedWordsMap(is);
+			countedWordsByWord = createCountedWordsMap(is);
 		} catch (IOException ioe) {
 			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
+		return countedWordsByWord;
 	}
 	
-	private void populateCountedWordsMap(InputStream is) {
-		countedWordsByWord = new HashMap<>();
+	private Map<String, CountedWord> createCountedWordsMap(InputStream is) {
+		Map<String, CountedWord> countedWordsByWord = new HashMap<>();
 		if (stopWords == null) {
 			stopWords = new HashSet<>();
 		}
@@ -97,19 +100,18 @@ public class WordCounter {
 			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
+		return countedWordsByWord;
 	}
 	
 	public List<CountedWord> getTop100CountedWordsFromFile(String fileName) {
-		populateCountedWordsMapFromFile(fileName);
-		return getTop100CountedWords();
+		return getTop100CountedWords(createCountedWordsMapFromFile(fileName));
 	}
 	
 	public List<CountedWord> getTop100CountedWordsFromDefaultFile() {
-		populateDefaultCountedWordsMap();
-		return getTop100CountedWords();
+		return getTop100CountedWords(createDefaultCountedWordsMap());
 	}
 	
-	private List<CountedWord> getTop100CountedWords() {
+	public List<CountedWord> getTop100CountedWords(Map<String, CountedWord> countedWordsByWord) {
 		List<CountedWord> top100 = new ArrayList<>();
 		for (CountedWord cw : countedWordsByWord.values()) {
 			top100.add(cw);
@@ -125,11 +127,6 @@ public class WordCounter {
 	public Set<String> getStopWords() {
 		return stopWords;
 	}
-	
-	public Map<String, CountedWord> getCountedWordsByWord() {
-		return countedWordsByWord;
-	}
-	
 	
 	/*
 	TODO: 
