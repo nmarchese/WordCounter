@@ -83,7 +83,7 @@ public class WordCounter {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				String[] words = line.split("\\W+");
+				String[] words = line.split("[^\\w-’']+");
 				for (String word : words) {
 					if (!word.isEmpty() && !stopWords.contains(word.toLowerCase())) {
 						CountedWord cw = countedWordsByWord.get(word.toLowerCase());
@@ -130,18 +130,29 @@ public class WordCounter {
 	
 	/*
 	TODO: 
-		- Documentation
-		- count hyphenated words as one
+		- Documentation:
+			- usage
 		
+			- default behavior:
+				- starts at first line of file
+				- order is based on count, then alphabetical order
+				- plural handling
+				- case handling
+				- hyphinated words
+				
+			- apostrophe and hyphen problems:
+				- no leading or trailing spaces on hyphens or apostrophes in provided text
+				- input file uses - and — differently (important for handling of hyphinated words)
+				- possessive nouns and contractions counted as separate words
+				- multiple hyphens with no spaces
+				- matches hyphens and apostrophes by themselves
+			
+			- custom use:
+				- command line arguments
+				
+			
+			
 		- stretch: plural logic? maybe use argument, have it both ways
-	   
-	   
-	   questions: 
-		- where to start in mobydick.txt? whole file? after ***start... line?
-		- hyphenated words?
-		- case sensitive?
-		- words with same count?
-		- plural?
 	*/
 
 }

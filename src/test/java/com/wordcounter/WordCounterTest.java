@@ -45,7 +45,7 @@ public class WordCounterTest {
 		Map<String, CountedWord> countedWordsMap = counter.createDefaultCountedWordsMap();
 		assertNotNull(countedWordsMap);
 		assertTrue(countedWordsMap.containsKey("whale"));
-		assertEquals(countedWordsMap.get("whale").getCount(), 1244);
+		assertEquals(countedWordsMap.get("whale").getCount(), 1114);
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class WordCounterTest {
 		Map<String, CountedWord> countedWordsMap = counter.createCountedWordsMapFromFile("src\\main\\resources\\mobydick.txt");
 		assertNotNull(countedWordsMap);
 		assertTrue(countedWordsMap.containsKey("whale"));
-		assertEquals(countedWordsMap.get("whale").getCount(), 1244);
+		assertEquals(countedWordsMap.get("whale").getCount(), 1114);
 	}
 	
 	@Test
