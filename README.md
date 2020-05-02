@@ -6,8 +6,8 @@ This program counts the occurrences of words in a text (.txt) file and prints ou
 
 ### Prerequisites
 
-Java (JDK 1.8 or above) [Download Java](https://www.java.com/en/download/)
-Apache Maven (3.6.3 recommended) [Download Maven](https://maven.apache.org/download.cgi)
+- Java (JDK 1.8 or above) [Download Java](https://www.java.com/en/download/)
+- Apache Maven (3.6.3 recommended) [Download Maven](https://maven.apache.org/download.cgi)
 
 ### Running WordCounter
 
@@ -64,6 +64,6 @@ When running WordCounter from the command line, one or two optional arguments ma
 
 Future improvements to this application could include:
 - additional command line arguments to change the default behavior for handling things such as:
-- plural words (count ‘ships’ and ‘ship’ as the same word, contrary to current default behavior)
-- case sensitive (count ‘Ship’ and ‘ship’ as separate words, contrary to current default behavior)
+	- plural words (count ‘ships’ and ‘ship’ as the same word, contrary to current default behavior)
+	- case sensitive (count ‘Ship’ and ‘ship’ as separate words, contrary to current default behavior)
 - create a UI and include the ability to upload files to count the words in
