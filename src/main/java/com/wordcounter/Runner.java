@@ -15,6 +15,9 @@ public class Runner {
 		System.out.println("\n\n******************* START ********************\n");
 		
 		if (args.length > 1) {
+			if (!args[1].endsWith(".txt")) {
+				throw new IllegalArgumentException("Argument 2 (args[1]) must be a valid file path to a .txt file");
+			}
 			System.out.println("********* Using custom stopWordsFile *********");
 			counter.populateStopWordsFromFile(args[1]);
 		} else {
@@ -23,6 +26,9 @@ public class Runner {
 		}
 		
 		if (args.length > 0) {
+			if (!args[0].endsWith(".txt")) {
+				throw new IllegalArgumentException("Argument 1 (args[0]) must be a valid file path to a .txt file");
+			}
 			System.out.println("********* Using custom fileToCount ***********");
 			words = counter.getTop100CountedWordsFromFile(args[0]);
 		} else {

@@ -24,7 +24,6 @@ public class WordCounter {
 		try (InputStream is = new FileInputStream(fileName)) {
 			populateStopWords(is);
 		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
 	}
@@ -33,7 +32,6 @@ public class WordCounter {
 		try (InputStream is = getClass().getClassLoader().getResourceAsStream(DEFAULT_STOP_WORDS)) {
 			populateStopWords(is);
 		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
 	}
@@ -48,7 +46,6 @@ public class WordCounter {
 				}
 			}
 		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
 	}
@@ -58,7 +55,6 @@ public class WordCounter {
 		try (InputStream is = new FileInputStream(fileName)) {
 			countedWordsByWord = createCountedWordsMap(is);
 		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
 		return countedWordsByWord;
@@ -69,7 +65,6 @@ public class WordCounter {
 		try (InputStream is = getClass().getClassLoader().getResourceAsStream(DEFAULT_FILE_TO_COUNT)) {
 			countedWordsByWord = createCountedWordsMap(is);
 		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
 		return countedWordsByWord;
@@ -80,10 +75,25 @@ public class WordCounter {
 		if (stopWords == null) {
 			stopWords = new HashSet<>();
 		}
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF8"))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				String[] words = line.split("[^\\w-’']+");
+				
+				/* Commented code left in project to potentially be used later for different handling of apostrophes/single quotes.
+				// This code when uncommented would result in treating left and right single quotes (used as apostrophes in mobydick.txt)
+				// as actual apostrophes, enabling the counting of words like "don't" and avoiding the counting of "ll" as a separate word
+				// instead of "he'll". Unfortunately, in this state this also results in the inability to properly handle actual left and 
+				// right single quotes. Specifically, this results in serious mishandeling of lines like:
+				      mad,—'I want to use him.' 'Take him,' says the governor—and
+				// where "'I" is a word and ".'" results in "'" being counted as a word, etc.
+					
+				// sanitize left and right single quotes to be treated as apostrophes
+				line = line.replaceAll("\u2019", "'");
+				line = line.replaceAll("\u2018", "'");
+				 */
+				
+				
+				String[] words = line.split("[^\\w-']+");
 				for (String word : words) {
 					if (!word.isEmpty() && !stopWords.contains(word.toLowerCase())) {
 						CountedWord cw = countedWordsByWord.get(word.toLowerCase());
@@ -97,7 +107,6 @@ public class WordCounter {
 				}
 			}
 		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
 		}
 		return countedWordsByWord;
@@ -130,29 +139,9 @@ public class WordCounter {
 	
 	/*
 	TODO: 
-		- Documentation:
-			- usage
-		
-			- default behavior:
-				- starts at first line of file
-				- order is based on count, then alphabetical order
-				- plural handling
-				- case handling
-				- hyphinated words
-				
-			- apostrophe and hyphen problems:
-				- no leading or trailing spaces on hyphens or apostrophes in provided text
-				- input file uses - and — differently (important for handling of hyphinated words)
-				- possessive nouns and contractions counted as separate words
-				- multiple hyphens with no spaces
-				- matches hyphens and apostrophes by themselves
-			
-			- custom use:
-				- command line arguments
-				
-			
-			
-		- stretch: plural logic? maybe use argument, have it both ways
+		- stretch goals: 
+			- toggles for plural handling, case sensitive, hyphen/apostrophe handling
+			- build UI and hook up so that output is printed to UI and custom files can be accepted from UI
 	*/
 
 }

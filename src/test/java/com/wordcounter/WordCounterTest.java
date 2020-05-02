@@ -45,7 +45,7 @@ public class WordCounterTest {
 		Map<String, CountedWord> countedWordsMap = counter.createDefaultCountedWordsMap();
 		assertNotNull(countedWordsMap);
 		assertTrue(countedWordsMap.containsKey("whale"));
-		assertEquals(countedWordsMap.get("whale").getCount(), 1114);
+		assertEquals(1114, countedWordsMap.get("whale").getCount());
 	}
 	
 	@Test
@@ -53,14 +53,34 @@ public class WordCounterTest {
 		Map<String, CountedWord> countedWordsMap = counter.createCountedWordsMapFromFile("src\\main\\resources\\mobydick.txt");
 		assertNotNull(countedWordsMap);
 		assertTrue(countedWordsMap.containsKey("whale"));
-		assertEquals(countedWordsMap.get("whale").getCount(), 1114);
+		assertEquals(1114, countedWordsMap.get("whale").getCount());
 	}
+	
+	@Test
+	public void test_hyphinated_word_counted_as_unique_word() {
+		Map<String, CountedWord> countedWordsMap = counter.createCountedWordsMapFromFile("src\\main\\resources\\mobydick.txt");
+		assertNotNull(countedWordsMap);
+		assertTrue(countedWordsMap.containsKey("whale-ship"));
+		assertEquals(28, countedWordsMap.get("whale-ship").getCount());
+	}
+	
+	/* commented code left in project to potentially be used later for different handling of apostrophes/single quotes
+	
+	@Test
+	public void test_word_with_apostrophe_counted_as_unique_word() {
+		Map<String, CountedWord> countedWordsMap = counter.createCountedWordsMapFromFile("src\\main\\resources\\mobydick.txt");
+		assertNotNull(countedWordsMap);
+		assertTrue(countedWordsMap.containsKey("he'll"));
+		assertEquals(18, countedWordsMap.get("he'll").getCount());
+	}
+	
+	*/
 	
 	@Test
 	public void test_getTop100CountedWordsFromDefaultFile_returns_list_of_100_words() {
 		List<CountedWord> words = counter.getTop100CountedWordsFromDefaultFile();
 		assertNotNull(words);
-		assertEquals(words.size(), 100);
+		assertEquals(100, words.size());
 	}
 
 	@Test
@@ -74,8 +94,8 @@ public class WordCounterTest {
 		
 		List<CountedWord> words = counter.getTop100CountedWords(countedWordsMap);
 		assertNotNull(words);
-		assertEquals(words.get(0), word1);
-		assertEquals(words.get(1), word2);
+		assertEquals(word1, words.get(0));
+		assertEquals(word2, words.get(1));
 	}
 	
 	@Test
@@ -88,8 +108,8 @@ public class WordCounterTest {
 		
 		List<CountedWord> words = counter.getTop100CountedWords(countedWordsMap);
 		assertNotNull(words);
-		assertEquals(words.get(0), word2);
-		assertEquals(words.get(1), word1);
+		assertEquals(word2, words.get(0));
+		assertEquals(word1, words.get(1));
 	}
 	
 }
